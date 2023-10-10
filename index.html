@@ -2,24 +2,59 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="styles.css">
     <title>Struggle counter</title>
+    <link rel="shortcut icon" type="image/png" href="favicon.png">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
-<main>
-    <h1>Calculate how much effort you will need to complete your course!</h1>
-    <label for="lessons">Total duration of the course</label>
-    <input id="lessons" type="number">
+<div class="page">
+    <div class="content">
+        <aside class="aside">
+            <form class="settings" id="settings">
+                <div class="settings__group">
+                    <label class="setting__label" for="total"><strong>Total</strong> duration of the course</label>
+                    <input class="settings__input" id="total" type="number" min="0">
+                </div>
+                <div class="settings__radio-group">
+                    <input checked class="setting__radio" type="radio" id="type-lessons" value="lesson" name="type"/>
+                    <label class="setting__label" for="type-lessons">Lessons</label>
 
-    <label for="schedule">How many days per week are you willing to allocate?</label>
-    <input id="schedule" type="number">
+                    <input class="setting__radio" type="radio" id="type-tasks" value="task" name="type"/>
+                    <label class="setting__label" for="type-tasks">Tasks</label>
 
-    <label for="plans">How much are you willing to complete per day of study?</label>
-    <input id="plans" type="number">
-
-    <label for="completed">How much has already been completed?</label>
-    <input id="completed" type="number">
-
-    <button type="button">Count!</button>
-</main>
+                    <input class="setting__radio" type="radio" id="type-hours" value="hour" name="type"/>
+                    <label class="setting__label" for="type-hours">Hours</label>
+                </div>
+                <div class="settings__group">
+                    <label class="setting__label" for="completed">How much has already been <strong>completed</strong></label>
+                    <input class="settings__input" id="completed" type="number" min="0">
+                </div>
+                <div class="settings__group">
+                    <label class="setting__label" for="frequency">How many <strong>days per week</strong> are you willing to
+                        allocate</label>
+                    <input class="settings__input" id="frequency" type="number" max="7">
+                </div>
+                <div class="settings__group">
+                    <label class="setting__label" for="amount">How much are you willing to complete <strong>per day</strong> of
+                        study</label>
+                    <input class="settings__input" id="amount" type="number" min="0">
+                </div>
+                <button id="btn-reset" class="button" type="reset">Reset</button>
+            </form>
+        </aside>
+        <main class="main">
+            <p class="head" id="head">. . .</p>
+            <h1 class="result" id="result">Calculate how much effort you will need to complete your&nbsp;course!</h1>
+        </main>
+    </div>
+<!--    <footer class="footer">&lt; &gt; by&nbsp;-->
+<!--        <a class="link" href="https://github.com/Marinarium">Schwabauer Marina</a> &nbsp;-->
+<!--        2023-->
+<!--    </footer>-->
+</div>
+<script src="script.js"></script>
 </body>
 </html>
