@@ -2,6 +2,46 @@ import { courseSettingsTemplate, loadCourseSettings, saveCourseSettings } from '
 import { checkFrequencyPerWeek, checkPositive } from './helpers.js';
 import { updateTextResult } from './calculations.js';
 
+function setCourseSettings (settings, inputTotal, inputCompleted, inputFrequency, inputAmount, radioType) {
+    inputTotal.value = settings.total;
+    inputCompleted.value = settings.completed;
+    inputFrequency.value = settings.frequency;
+    inputAmount.value = settings.amount;
+    setCheckedType(settings.type, radioType);
+}
+
+function updateCourseSettings(courseSettings, inputTotal, inputCompleted, inputFrequency, inputAmount, radioType) {
+    courseSettings.total = checkPositive(+inputTotal.value, inputTotal);
+    courseSettings.completed = checkPositive(+inputCompleted.value, inputCompleted);
+    courseSettings.frequency = checkFrequencyPerWeek(+inputFrequency.value, inputFrequency);
+    courseSettings.amount = checkPositive(+inputAmount.value, inputAmount);
+    updateCheckedType(radioType, courseSettings);
+    updateTextResult(courseSettings);
+    saveCourseSettings(courseSettings);
+}
+
+function clearCourseSettings(courseSettings, courseSettingsTemplate) {
+    courseSettings = { ...courseSettingsTemplate };
+    updateTextResult(courseSettings);
+    saveCourseSettings(courseSettings);
+}
+
+function setCheckedType (value, radioType) {
+    radioType.forEach(radio => {
+        if (radio.value === value) {
+            radio.checked = true;
+        }
+    });
+}
+
+function updateCheckedType(radioType, courseSettings) {
+    radioType.forEach((radio) => {
+        if (radio.checked) {
+            courseSettings.type = radio.value;
+        }
+    });
+}
+
 export function initializeForm() {
     const inputTotal = document.getElementById('total');
     const inputCompleted = document.getElementById('completed');
@@ -12,35 +52,15 @@ export function initializeForm() {
 
     let courseSettings = loadCourseSettings();
 
-    function updateCheckedType () {
-        radioType.forEach(radio => {
-            if (radio.checked) {
-                courseSettings.type = radio.value;
-            }
-        });
-    }
+    setCourseSettings(courseSettings, inputTotal, inputCompleted, inputFrequency, inputAmount, radioType);
 
-    function updateCourseSettings () {
-        courseSettings.total = checkPositive(+inputTotal.value, inputTotal);
-        courseSettings.completed = checkPositive(+inputCompleted.value, inputCompleted);
-        courseSettings.frequency = checkFrequencyPerWeek(+inputFrequency.value, inputFrequency);
-        courseSettings.amount = checkPositive(+inputAmount.value, inputAmount);
-        updateCheckedType();
+    updateTextResult(courseSettings);
 
-        updateTextResult(courseSettings);
+    settingsForm.addEventListener('input', () => {
+        updateCourseSettings(courseSettings, inputTotal, inputCompleted, inputFrequency, inputAmount, radioType);
+    });
 
-        saveCourseSettings(courseSettings);
-    }
-
-
-    function clearCourseSettings() {
-        courseSettings = { ...courseSettingsTemplate };
-
-        updateTextResult(courseSettings);
-
-        saveCourseSettings(courseSettings);
-    }
-
-    settingsForm.addEventListener('input', updateCourseSettings);
-    settingsForm.addEventListener('reset', clearCourseSettings);
+    settingsForm.addEventListener('reset', () => {
+        clearCourseSettings(courseSettings, courseSettingsTemplate);
+    });
 }
