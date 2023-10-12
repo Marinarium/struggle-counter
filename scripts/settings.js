@@ -8,6 +8,7 @@ export const courseSettingsTemplate = {
 
 export function loadCourseSettings() {
     const storedCourseSettings = localStorage.getItem('courseSettings');
+
     return storedCourseSettings ? JSON.parse(storedCourseSettings) : { ...courseSettingsTemplate };
 }
 

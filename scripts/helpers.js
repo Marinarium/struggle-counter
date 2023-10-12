@@ -1,5 +1,6 @@
 export function countDays(obj) {
     const week = 7;
+
     return Math.ceil((obj.total - obj.completed) / obj.amount / obj.frequency * week);
 }
 
@@ -11,6 +12,7 @@ export function addGrammaticalNumber(num, word) {
     if (num > 1) {
         return /[sx]/.test(word[word.length - 1]) ? word + 'es' : word + 's';
     }
+
     return word;
 }
 
