@@ -7,6 +7,7 @@ const radioType = document.querySelectorAll('input[name="type"]');
 
 const result = document.getElementById('result');
 const head = document.getElementById('head');
+const remaining = document.getElementById('remaining');
 
 const courseSettingsTemplate = {
     total: null,
@@ -107,18 +108,28 @@ function countDays (obj) {
     return Math.ceil((obj.total - obj.completed) / obj.amount / obj.frequency * week);
 }
 
+function countRemaining (total, completed) {
+    return total - completed;
+}
+
 function updateTextResult (settings) {
+    const {total, amount, completed, frequency, type} = settings;
     const daysResult = countDays(settings);
-    if (settings.frequency && settings.amount) {
+    const remainingNum = countRemaining(total, completed);
+
+    if (frequency && amount) {
         head.textContent =
-            `If ${settings.frequency} ${addGrammaticalNumber(settings.frequency, 'day')} a week for ${settings.amount} ${addGrammaticalNumber(settings.amount, settings.type)} a day...`;
+            `If ${frequency} ${addGrammaticalNumber(frequency, 'day')} a week for ${amount} ${addGrammaticalNumber(amount, type)} a day...`;
     } else {
         head.textContent = '. . .';
     }
+
     if (daysResult && isFinite(daysResult)) {
         result.textContent = `It will take you ${daysResult} ${addGrammaticalNumber(daysResult, 'day')} to complete the course!`;
+        remaining.textContent = `There are ${remainingNum} ${addGrammaticalNumber(remainingNum, type)} remaining out of ${total}`;
     } else {
         result.textContent = `Calculate how much effort you will need to complete your course!`;
+        remaining.textContent = '';
     }
 }
 
